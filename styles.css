@@ -1,0 +1,2516 @@
+/* =========================================================
+   Starry Budget — styles.css
+   1. Theme colours (light + dark)
+   2. Base
+   3. Top navigation
+   4. Shared building blocks (cards, pills, buttons, inputs)
+   5. Images & animations (illustrations, frames, theme button)
+   6. Page layouts (home, transactions, monthly, yearly, income)
+   7. Charts
+   8. Pop-up form + theme switcher
+   9. Responsive (tablet + mobile)
+   ========================================================= */
+
+/* ---------- 1. THEME COLOURS ----------
+   Every colour lives here, so dark mode only has to swap these. */
+:root {
+  /* Background = two soft coloured glows on top of a bold diagonal gradient */
+  --bg-gradient:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(255, 186, 228, 0.55),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 88% 78%,
+      rgba(126, 196, 255, 0.4),
+      transparent 48%
+    ),
+    linear-gradient(
+      160deg,
+      #5c5fd6 0%,
+      #8571e6 28%,
+      #b77fe6 55%,
+      #ea95cf 80%,
+      #ffc2d6 100%
+    );
+  --nav-bg: rgba(238, 236, 250, 0.96);
+  --nav-border: #6b6a8a;
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-border: rgba(255, 255, 255, 0.75);
+  --inner-bg: rgba(255, 255, 255, 0.6);
+  --input-bg: rgba(255, 255, 255, 0.75);
+  --hover-bg: rgba(255, 255, 255, 0.4);
+  --text: #383758;
+  --text-muted: #6e6b8e;
+  --text-on-bg: #ffffff;
+  --pill-bg: #f8cbe0;
+  --pill-text: #3a3356;
+  --accent-pink: #f4a9c9;
+  --accent-blue: #7383d4;
+  --accent-dark: #3d3c66;
+  --on-accent-dark: #ffffff;
+  --positive: #2f8f63;
+  --negative: #c2456d;
+  --track: rgba(110, 107, 142, 0.18);
+  --shadow: 0 10px 30px rgba(70, 60, 140, 0.18);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-pill: 999px;
+  /* Little "v" arrow drawn as an SVG, used by every dropdown */
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%236e6b8e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  /* Glassy nav bar */
+  --nav-glass: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.62),
+    rgba(255, 255, 255, 0.3)
+  );
+  --nav-glass-edge: rgba(255, 255, 255, 0.75);
+  --nav-hover-bg: rgba(255, 255, 255, 0.7);
+  --nav-glow: rgba(150, 90, 220, 0.35);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark; /* makes date pickers & scrollbars dark too */
+  --bg-gradient:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(186, 90, 200, 0.35),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 88% 78%,
+      rgba(70, 110, 220, 0.3),
+      transparent 48%
+    ),
+    linear-gradient(
+      160deg,
+      #0b0a26 0%,
+      #1e1956 30%,
+      #3e2378 60%,
+      #6a2c74 85%,
+      #8a3a76 100%
+    );
+  --nav-bg: rgba(28, 26, 60, 0.96);
+  --nav-border: #4c4a7a;
+  --card-bg: rgba(44, 40, 86, 0.62);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --inner-bg: rgba(255, 255, 255, 0.06);
+  --input-bg: rgba(255, 255, 255, 0.08);
+  --hover-bg: rgba(255, 255, 255, 0.08);
+  --text: #eceafd;
+  --text-muted: #aaa6d4;
+  --pill-bg: #e79ac0;
+  --pill-text: #2b1f3d;
+  --accent-dark: #c9c4ff;
+  --on-accent-dark: #241f45;
+  --positive: #6fd3a4;
+  --negative: #ff8fb0;
+  --track: rgba(255, 255, 255, 0.12);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23aaa6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --nav-glass: linear-gradient(
+    180deg,
+    rgba(40, 34, 90, 0.7),
+    rgba(28, 24, 66, 0.4)
+  );
+  --nav-glass-edge: rgba(255, 255, 255, 0.16);
+  --nav-hover-bg: rgba(255, 255, 255, 0.14);
+  --nav-glow: rgba(200, 150, 255, 0.4);
+}
+
+/* ---------- 2. BASE ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+img {
+  max-width: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Nunito", system-ui, sans-serif;
+  color: var(--text);
+  line-height: 1.4;
+  /* Safety net: nothing can push the page wider than the screen.
+     "clip" (unlike "hidden") keeps the sticky nav bar working. */
+  overflow-x: clip;
+}
+
+/* Images can't be dragged out or long-pressed to save (app.js also blocks right-click) */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Background layer:
+   .backdrop          = the gradient only
+   .backdrop::before  = sparkle stars + tiny dots, twinkling
+   .backdrop::after   = a second set, twinkling out of step
+   (In each background list, the Nth size/position belongs to the Nth image.) */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--bg-gradient);
+}
+
+.backdrop::before,
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  animation: twinkle 3.2s ease-in-out infinite alternate;
+}
+
+/* Each SVG tile holds a few four-point stars; the tile repeats across the screen */
+.backdrop::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 320'%3E%3Cg fill='white'%3E%3Cpath transform='translate(40 60) scale(.5)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3Cpath transform='translate(210 30) scale(.35)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3Cpath transform='translate(150 190) scale(.65)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3Cpath transform='translate(280 250) scale(.4)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3Cpath transform='translate(70 270) scale(.3)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 1px, transparent 1.6px);
+  background-size:
+    320px 320px,
+    90px 90px,
+    260px 260px;
+  background-position:
+    0 0,
+    0 0,
+    130px 30px;
+}
+
+.backdrop::after {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 420'%3E%3Cg fill='white'%3E%3Cpath transform='translate(100 100) scale(.55)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3Cpath transform='translate(330 160) scale(.4)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3Cpath transform='translate(220 340) scale(.5)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3Cpath transform='translate(380 380) scale(.3)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3Cpath transform='translate(30 250) scale(.35)' d='M0-10C1-3 3-1 10 0C3 1 1 3 0 10C-1 3-3 1-10 0C-3-1-1-3 0-10Z'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle, rgba(255, 255, 255, 0.75) 1.2px, transparent 2px);
+  background-size:
+    420px 420px,
+    170px 170px;
+  background-position:
+    160px 90px,
+    45px 80px;
+  animation-delay: -1.6s; /* starts halfway through, so the two sets alternate */
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The page content sits on its own layer, so the big desktop
+   illustrations (z-index: -1 inside it) slide in underneath the cards */
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* ---------- 3. TOP NAVIGATION ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px max(16px, calc((100% - 1200px) / 2));
+  /* Frosted glass: see-through colour + blur of whatever is behind it */
+  background: var(--nav-glass);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border-bottom: 1px solid var(--nav-glass-edge);
+  box-shadow:
+    0 8px 30px rgba(60, 40, 140, 0.18),
+    inset 0 1px 0 var(--nav-glass-edge); /* thin shine along the top */
+}
+
+.nav {
+  display: flex;
+  gap: 6px;
+}
+
+/* Easing: overshoots a little, then settles */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
+.nav-link:hover {
+  transform: translateY(-3px);
+  background: var(--nav-hover-bg);
+  border-color: var(--nav-glass-edge);
+  box-shadow:
+    0 10px 24px var(--nav-glow),
+    0 0 0 4px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.nav-link.active {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 220, 238, 0.95),
+    rgba(246, 170, 206, 0.85)
+  );
+  border-color: rgba(255, 255, 255, 0.9);
+  color: var(--pill-text);
+  box-shadow:
+    0 6px 18px rgba(240, 120, 180, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.nav-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 3px rgba(60, 40, 120, 0.35));
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* On hover the icon pops up and tilts */
+.nav-link:hover .nav-icon {
+  transform: scale(1.25) rotate(-8deg);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.currency-select {
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text);
+  background-color: var(--input-bg);
+  border: 1px solid var(--track);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* ---------- 4. SHARED BUILDING BLOCKS ---------- */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px 110px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.title-with-icon,
+.section-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.header-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.title-pill {
+  display: inline-block;
+  margin: 0;
+  padding: 8px 20px;
+  background: var(--pill-bg);
+  color: var(--pill-text);
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.title-pill.large {
+  font-size: 1.45rem;
+  padding: 10px 22px;
+}
+
+.title-pill.small {
+  font-size: 1rem;
+  padding: 6px 18px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.card-title {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.card-title.big {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.95rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.inner-card {
+  background: var(--inner-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+
+.note {
+  margin: 6px 0 12px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.note.left {
+  text-align: left;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.empty-note {
+  margin: 8px 0;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  padding: 7px 18px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(70, 60, 140, 0.12);
+  transition:
+    transform 0.15s,
+    background 0.15s;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+}
+
+[data-theme="dark"] .btn {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.btn-white {
+  background: #ffffff;
+}
+
+.btn-primary,
+[data-theme="dark"] .btn-primary {
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+}
+
+.btn-primary:hover,
+[data-theme="dark"] .btn-primary:hover {
+  background: var(--accent-dark);
+  opacity: 0.9;
+}
+
+.btn-danger,
+[data-theme="dark"] .btn-danger {
+  background: transparent;
+  color: var(--negative);
+  border-color: var(--negative);
+  box-shadow: none;
+}
+
+.text-button {
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.text-button.danger {
+  color: var(--negative);
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--accent-blue);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.input {
+  font: inherit;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 9px 14px;
+  min-height: 42px;
+  min-width: 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.input.full-width {
+  width: 100%;
+}
+
+/* Dropdowns: hide the browser's own arrow and use custom. */
+select.input,
+select.currency-select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: var(--select-arrow);
+  background-repeat: no-repeat;
+  background-size: 12px 8px;
+  background-position: right 16px center;
+  padding-right: 42px;
+}
+
+select.currency-select {
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+/* The open dropdown list: always dark text on a light background */
+select option,
+select optgroup {
+  background-color: #f4f2fc;
+  color: #2b2a4a;
+}
+
+.input:focus,
+.btn:focus-visible,
+.segmented-option:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Two-option pill switch (Assets On/Off, Show/Hide Future) */
+.segmented {
+  display: flex;
+  padding: 3px;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+}
+
+.segmented-option {
+  flex: 1;
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.segmented-option.active {
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+}
+
+/* Little "i" bubble – the tooltip text comes from its data-tip attribute.
+   The tooltip uses display:none until hover so it never makes the page wider. */
+.info {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: help;
+  vertical-align: middle;
+}
+
+.info::after {
+  content: attr(data-tip);
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: -10px;
+  width: max-content;
+  max-width: 240px;
+  padding: 8px 10px;
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.info:hover::after,
+.info:focus::after {
+  display: block;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--pill-bg);
+  color: var(--pill-text);
+  font-size: 0.68rem;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.amount {
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.is-positive {
+  color: var(--positive);
+}
+
+.is-negative {
+  color: var(--negative);
+}
+
+/* ---------- 5. IMAGES & ANIMATIONS ---------- */
+
+/* Page illustrations next to the page titles – float gently up and down */
+.page-illustration {
+  height: 72px;
+  width: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 6px rgba(60, 50, 130, 0.2));
+  animation: float-gently 4.5s ease-in-out infinite;
+}
+
+.page-illustration.small {
+  height: 56px;
+}
+
+@keyframes float-gently {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+/* Bigger, slower drift (with a tiny tilt) for the large desktop illustrations */
+@keyframes float-big {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-26px) rotate(-1.5deg);
+  }
+}
+
+/* Magic sparkle cursor trail: each star is a little "+" made of two
+   lines in its own colour (set by app.js), with a soft glow */
+.cursor-sparkle {
+  position: fixed;
+  z-index: 1000;
+  width: 9px;
+  height: 9px;
+  margin: -4px 0 0 -4px; /* centre the star on the mouse point */
+  pointer-events: none;
+  animation: sparkle-fall 1.2s ease-in forwards;
+}
+
+.cursor-sparkle::before,
+.cursor-sparkle::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  border-radius: 1px;
+  box-shadow: 0 0 4px currentColor;
+}
+
+.cursor-sparkle::before {
+  left: calc(50% - 1px);
+  top: 0;
+  width: 2px;
+  height: 100%;
+}
+
+.cursor-sparkle::after {
+  top: calc(50% - 1px);
+  left: 0;
+  width: 100%;
+  height: 2px;
+}
+
+/* --drift-x and --fall-y are random numbers picked in app.js */
+@keyframes sparkle-fall {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--drift-x), var(--fall-y)) scale(0.2) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+/* Framed pictures (the GIFs on Home and Yearly Overview).
+   The image is stretched to cover the whole frame. */
+.banner {
+  position: relative;
+  height: 140px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  background: var(--card-bg); /* shows while the GIF loads */
+}
+
+.banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.net-worth-avatar {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.net-worth-note {
+  margin: -10px 0 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-on-bg);
+  text-shadow: 0 1px 6px rgba(60, 50, 130, 0.35);
+}
+
+/* Set by "Customize": hides the animated page illustrations everywhere */
+.hide-illustrations .page-illustration {
+  display: none;
+}
+
+/* ---------- 6a. HOME ---------- */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px;
+  align-items: start;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.toggle-row .segmented {
+  flex: 1;
+}
+
+.net-worth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 16px;
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.list-label {
+  margin: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.money-list {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+}
+
+.money-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 8px;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.money-item:hover {
+  background: var(--hover-bg);
+}
+
+.item-icon {
+  font-size: 1.6rem;
+}
+
+.item-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.empty-on-bg {
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-on-bg);
+  text-shadow: 0 1px 6px rgba(60, 50, 130, 0.35);
+}
+
+.see-all {
+  text-align: center;
+}
+
+/* Transaction rows used on Home and in "Cards" view */
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  font: inherit;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.transaction-item:hover {
+  transform: translateY(-1px);
+}
+
+.transaction-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background: var(--inner-bg);
+  border-radius: 12px;
+  font-size: 1.4rem;
+}
+
+.transaction-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction-title {
+  display: block;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.is-future {
+  opacity: 0.7;
+}
+
+/* ---------- 6b. ALL TRANSACTIONS ---------- */
+.filters-card {
+  margin-bottom: 20px;
+}
+
+.filters-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.filters-top .card-title {
+  margin: 0;
+}
+
+.filters-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-row > * {
+  flex: 1 1 160px;
+}
+
+.filter-search {
+  flex: 2 1 240px;
+  text-align: center;
+}
+
+.filter-category {
+  flex: 2 1 220px;
+}
+
+.filter-row .text-button {
+  flex: 0 0 auto;
+  padding: 0 8px;
+}
+
+.filter-row .btn {
+  flex: 0 1 120px;
+}
+
+.results-area {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.results-summary {
+  margin: 0 0 12px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-on-bg);
+  text-shadow: 0 1px 6px rgba(60, 50, 130, 0.35);
+}
+
+.empty-card {
+  padding: 28px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.data-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--track);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--track);
+}
+
+.align-right {
+  text-align: right !important;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover,
+.clickable-row:focus {
+  background: var(--hover-bg);
+  outline: none;
+}
+
+.category-chip {
+  padding: 3px 10px;
+  background: var(--inner-bg);
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+}
+
+/* ---------- 6c. MONTHLY OVERVIEW ---------- */
+.monthly-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.monthly-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.column-title {
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-on-bg);
+}
+
+.hint {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Name | Expected | Current | % */
+.breakdown-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) 44px;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--track);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.breakdown-head {
+  border-bottom: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.breakdown-row.is-total {
+  font-weight: 800;
+}
+
+.breakdown-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.row-icon {
+  font-size: 1.15rem;
+}
+
+.breakdown-percent {
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.breakdown-percent.is-over {
+  color: var(--negative);
+}
+
+.budget-button {
+  justify-self: start;
+  padding: 2px 4px;
+  background: none;
+  border: none;
+  border-bottom: 1px dashed var(--text-muted);
+  border-radius: 6px 6px 0 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.budget-button:hover {
+  background: rgba(248, 203, 224, 0.5);
+}
+
+.group-pill-row {
+  margin: 14px 0 6px;
+  text-align: center;
+}
+
+.group-pill {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #3a3356;
+  background: #cbbcf2;
+}
+
+.group-pill[data-group="Income"] {
+  background: #bfe6c9;
+}
+.group-pill[data-group="Housing"] {
+  background: #d3c3f3;
+}
+.group-pill[data-group="Necessities"] {
+  background: #b9c3f2;
+}
+.group-pill[data-group="Wants"] {
+  background: #f6c3da;
+}
+.group-pill[data-group="Savings"] {
+  background: #f6dfae;
+}
+
+.card-footer-text {
+  margin: 10px 0 0;
+  text-align: right;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.group-progress {
+  margin-bottom: 12px;
+}
+
+.group-progress-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* ---------- 6d. YEARLY OVERVIEW ---------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.stat-label {
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+/* The yearly frame stretches to the height of the stat cards beside it */
+.stat-banner {
+  height: auto;
+  min-height: 92px;
+  margin: 0;
+}
+
+.yearly-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.big-number {
+  margin: 2px 0 10px;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.kv-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--track);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.kv-row span {
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.ranked-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ranked-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 0;
+  border-top: 1px solid var(--track);
+  font-weight: 700;
+}
+
+.wants-needs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.wants-needs h4 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+/* ---------- 6e. INCOME HISTORY ---------- */
+.income-overview {
+  margin-bottom: 16px;
+}
+
+.income-overview p {
+  margin: 0 0 8px;
+}
+
+.income-charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
+.chart-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-area > * {
+  width: 100%;
+}
+
+/* ---------- 7. CHARTS ---------- */
+/* Horizontal progress bars */
+.bar-track {
+  height: 10px;
+  overflow: hidden;
+  background: var(--track);
+  border-radius: var(--radius-pill);
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-blue));
+  border-radius: var(--radius-pill);
+  transition: width 0.4s ease;
+}
+
+.bar-fill.is-over {
+  background: var(--negative);
+}
+
+.bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bar-list-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Weekly spending rows */
+.week-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.week-label {
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Money in / out vertical bars */
+.io-chart {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.io-group h4 {
+  margin: 0 0 8px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+}
+
+.io-bars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.io-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.io-value {
+  min-height: 2em;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.io-track {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 70px;
+  height: 150px;
+  overflow: hidden;
+  background: var(--track);
+  border-radius: 10px;
+}
+
+.io-fill {
+  width: 100%;
+  border-radius: 10px;
+  transition: height 0.4s ease;
+}
+
+.io-fill.in {
+  background: var(--accent-pink);
+}
+.io-fill.out {
+  background: var(--accent-blue);
+}
+
+.io-label {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.io-ratio {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* Donut chart (built with conic-gradient in app.js) */
+.donut {
+  display: grid;
+  place-items: center;
+  width: 190px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  margin: 8px auto 16px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+.donut-empty {
+  background: #f7e2d6;
+}
+
+.donut-hole {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 64%;
+  aspect-ratio: 1;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--nav-bg);
+  text-align: center;
+}
+
+.donut-tag {
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--pill-bg);
+  color: var(--pill-text);
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.donut-hole strong {
+  font-size: 0.95rem;
+}
+
+.donut-hole small {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.legend-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.legend-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legend-percent {
+  width: 38px;
+  text-align: right;
+  color: var(--text-muted);
+}
+
+/* Line charts (SVG) */
+.line-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 4px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.legend-swatch.actual {
+  background: var(--accent-blue);
+}
+.legend-swatch.budget {
+  background: var(--accent-pink);
+}
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.line-actual {
+  fill: none;
+  stroke: var(--accent-blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.line-budget {
+  fill: none;
+  stroke: var(--accent-pink);
+  stroke-width: 3;
+  stroke-dasharray: 6 5;
+}
+
+.chart-dot {
+  fill: var(--accent-blue);
+}
+
+.chart-grid {
+  stroke: var(--track);
+  stroke-width: 1;
+}
+
+.chart-text {
+  fill: var(--text-muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.chart-caption {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Vertical column chart */
+.column-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 190px;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  min-width: 0;
+}
+
+.column-value {
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.column-track {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 60px;
+  overflow: hidden;
+  background: var(--track);
+  border-radius: 8px;
+}
+
+.column-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--accent-pink), var(--accent-blue));
+  border-radius: 8px;
+  transition: height 0.4s ease;
+}
+
+.column-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* ---------- 8. POP-UP FORM + THEME SWITCHER ---------- */
+.modal {
+  width: min(440px, calc(100vw - 32px));
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--nav-bg);
+  color: var(--text);
+  box-shadow: 0 20px 60px rgba(30, 20, 80, 0.4);
+}
+
+.modal::backdrop {
+  background: rgba(40, 30, 90, 0.45);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.modal-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.form-field small {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--accent-blue);
+}
+
+.form-error {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--negative);
+}
+
+.form-error:empty {
+  display: none;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* "Back to welcome page" gets its own full-width row under Cancel / Save */
+#dialogExtraButton {
+  order: 10;
+  flex-basis: 100%;
+}
+
+/* Small credit in the bottom-right corner, under the theme button */
+.site-credit {
+  position: fixed;
+  right: 16px;
+  bottom: 6px;
+  z-index: 30;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-on-bg);
+  text-shadow: 0 1px 6px rgba(60, 50, 130, 0.45);
+}
+
+.site-credit a {
+  color: inherit;
+}
+
+.theme-switcher {
+  position: fixed;
+  right: 20px;
+  bottom: 30px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.theme-fab {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--card-border);
+  border-radius: 50%;
+  background: var(--nav-bg);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.theme-fab:hover {
+  transform: scale(1.06);
+}
+
+/* Both icons are stacked on top of each other inside the button.
+   The hidden one is shrunk, spun and blurred; switching mode swaps
+   which one is hidden, so one smoothly switches into the other. */
+.theme-icon {
+  position: absolute;
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  object-fit: contain;
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease,
+    filter 0.6s ease;
+}
+
+.theme-icon-light,
+[data-theme="dark"] .theme-icon-dark {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  filter: blur(0);
+}
+
+.theme-icon-dark,
+[data-theme="dark"] .theme-icon-light {
+  opacity: 0;
+  transform: scale(0.3) rotate(-160deg);
+  filter: blur(4px);
+}
+
+/* "Light Mode" / "Dark Mode" label that appears to the left on hover.
+   The text comes from the data-label attribute that app.js sets. */
+.theme-switcher::before {
+  content: attr(data-label);
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  padding: 6px 12px;
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(6px, -50%);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  pointer-events: none;
+}
+
+.theme-switcher:hover::before {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* ---------- WELCOME PAGE ----------
+   A glass card in the middle of the screen with two choices.
+   The example ("is-primary") is bigger, pink and marked "Recommended". */
+.welcome {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 40px 20px 110px;
+}
+
+.welcome-card {
+  width: min(820px, 100%);
+  padding: 32px 36px 36px;
+  text-align: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 32px;
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 var(--nav-glass-edge);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.welcome-illustration {
+  height: 120px;
+  width: auto;
+  filter: drop-shadow(0 6px 8px rgba(60, 50, 130, 0.25));
+  animation: float-gently 4.5s ease-in-out infinite;
+}
+
+.welcome-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.welcome-text {
+  max-width: 460px;
+  margin: 0 auto 30px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.welcome-options {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 18px;
+  text-align: left;
+}
+
+.welcome-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  font: inherit;
+  color: var(--text);
+  text-align: left;
+  background: var(--inner-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 6px 18px rgba(70, 60, 140, 0.12);
+  cursor: pointer;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s;
+}
+
+.welcome-option:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px var(--nav-glow);
+}
+
+.welcome-option:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 3px;
+}
+
+.welcome-option.is-primary {
+  color: var(--pill-text);
+  background: linear-gradient(
+    160deg,
+    rgba(255, 228, 241, 0.97),
+    rgba(246, 168, 205, 0.88)
+  );
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 10px 28px rgba(240, 120, 180, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.welcome-option.is-primary:hover {
+  box-shadow:
+    0 18px 40px rgba(240, 120, 180, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.welcome-badge {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  z-index: 1;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Small framed GIF preview inside the example option.
+   iPhone Safari can fail to draw an animated GIF that sits inside a
+   rounded, overflow-hidden box within a blurred (backdrop-filter) card.
+   Giving the frame its own layer (transform + isolation) and keeping the
+   image in normal flow (no absolute positioning) avoids that bug. */
+.welcome-frame {
+  position: relative;
+  display: block;
+  height: 130px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-md);
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+.welcome-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.welcome-option-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.is-primary .welcome-option-title {
+  font-size: 1.45rem;
+}
+
+.welcome-option-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.welcome-option-cta {
+  margin-top: auto;
+  padding-top: 4px;
+  font-weight: 800;
+  color: var(--accent-dark);
+}
+
+.is-primary .welcome-option-cta {
+  color: var(--pill-text);
+}
+
+/* Phones: everything a size smaller so the whole welcome card fits on screen */
+@media (max-width: 640px) {
+  .welcome {
+    padding: 16px 14px 76px;
+  }
+
+  .welcome-card {
+    padding: 18px 16px 20px;
+    border-radius: 24px;
+    /* No blur on phones: it's the main trigger of the Safari GIF bug */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .welcome-illustration {
+    height: 64px;
+  }
+
+  .welcome .eyebrow {
+    margin-bottom: 4px;
+    font-size: 0.72rem;
+  }
+
+  .welcome-title {
+    margin-bottom: 4px;
+    font-size: 1.45rem;
+  }
+
+  .welcome-text {
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+  }
+
+  /* Stacked: the example stays on top */
+  .welcome-options {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .welcome-option {
+    gap: 5px;
+    padding: 14px;
+  }
+
+  .welcome-badge {
+    top: -10px;
+    left: 14px;
+    font-size: 0.66rem;
+  }
+
+  .welcome-frame {
+    height: 84px;
+  }
+
+  .welcome-option-title,
+  .is-primary .welcome-option-title {
+    font-size: 1.1rem;
+  }
+
+  .welcome-option-text {
+    font-size: 0.82rem;
+  }
+
+  .welcome-option-cta {
+    font-size: 0.9rem;
+  }
+}
+
+/* "EXAMPLE" label in the top bar while viewing the example */
+.mode-badge {
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.user-button {
+  margin-left: auto; /* keeps the greeting on the right on phones */
+}
+
+/* Year text box + "Use the wheel" button side by side */
+.year-entry {
+  display: flex;
+  gap: 8px;
+}
+
+.year-typed {
+  flex: 1;
+  min-width: 0;
+}
+
+.year-wheel-toggle {
+  flex-shrink: 0;
+}
+
+/* ---------- BIRTH-YEAR WHEEL ----------
+   A 200px-tall window onto a list of 40px rows. The pink band marks the
+   middle row; the list snaps so a year always lands in it.
+   If you change 40px here, also change WHEEL_ITEM_HEIGHT in app.js. */
+.year-wheel {
+  position: relative;
+  margin-top: 6px;
+  height: 200px;
+  overflow: hidden;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+}
+
+.year-wheel:focus-within {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+.year-wheel::before {
+  content: "";
+  position: absolute;
+  top: 80px;
+  left: 8px;
+  right: 8px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--pill-bg);
+  pointer-events: none;
+}
+
+.wheel-list {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 80px 0; /* lets the first and last rows reach the middle band */
+  list-style: none;
+  /* Up and down only: no sideways sliding on phones */
+  overflow-x: hidden;
+  overflow-y: auto;
+  touch-action: pan-y;
+  overscroll-behavior: contain; /* scrolling the wheel doesn't scroll the pop-up */
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  outline: none;
+  /* Rows fade out towards the top and bottom edges */
+  -webkit-mask-image: linear-gradient(
+    transparent,
+    #000 30%,
+    #000 70%,
+    transparent
+  );
+  mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
+}
+
+.wheel-list::-webkit-scrollbar {
+  display: none;
+}
+
+.wheel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  scroll-snap-align: center;
+  color: var(--text-muted);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    font-size 0.15s,
+    color 0.15s;
+}
+
+.wheel-item small {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+/* The chosen year gets bigger text (not a "scale" effect, which would
+   make the row wider than the wheel and let it slide sideways) */
+.wheel-item.is-selected {
+  color: var(--pill-text);
+  font-size: 1.12rem;
+}
+
+/* Desktop: the page illustration leaves the title and becomes a big
+   picture fixed to the right edge of the screen, slightly cut off,
+   underneath the cards. Its size grows and shrinks with the window. */
+@media (min-width: 1101px) {
+  .page-illustration,
+  .page-illustration.small {
+    position: fixed;
+    right: clamp(-120px, -4vw, -30px);
+    bottom: 3vh;
+    height: min(clamp(260px, 32vw, 520px), 78vh);
+    z-index: -1;
+    pointer-events: none; /* clicks pass straight through to the cards */
+    animation: float-big 6s ease-in-out infinite;
+  }
+
+  /* Add class "on-left" in index.html to put a picture on the left side */
+  .page-illustration.on-left {
+    right: auto;
+    left: clamp(-120px, -4vw, -30px);
+  }
+
+  /* Add class "is-large" to make a picture bigger */
+  .page-illustration.is-large {
+    height: min(clamp(330px, 42vw, 680px), 88vh);
+  }
+}
+
+/* Respect people who turn off animations in their device settings */
+@media (prefers-reduced-motion: reduce) {
+  .page-illustration,
+  .page-illustration.small,
+  .welcome-illustration,
+  .backdrop::before,
+  .backdrop::after {
+    animation: none;
+  }
+
+  .theme-icon {
+    transition: none;
+  }
+}
+
+/* ---------- 9. RESPONSIVE ---------- */
+/* Small laptops / large tablets */
+@media (max-width: 1100px) {
+  .monthly-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Category breakdown takes the full first row */
+  .monthly-grid > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .yearly-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Smaller screens: the nav moves to its own row as 5 equal tiles
+   (icon on top, words underneath) so every link is always visible. */
+@media (max-width: 1180px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 16px;
+  }
+
+  .topbar-right {
+    order: 1;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav {
+    order: 2;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .nav-link {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 4px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.15;
+    font-size: 0.85rem;
+  }
+
+  .nav-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 860px) {
+  .home-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  /* Yearly: picture becomes a full-width row on top, stats in a row of 3 */
+  .stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .stat-banner {
+    order: -1;
+    grid-column: 1 / -1;
+    height: 150px;
+  }
+
+  .income-charts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phones */
+@media (max-width: 640px) {
+  /* Short nav labels: "All Transactions" → "Transactions" etc. */
+  .hide-on-phone {
+    display: none;
+  }
+
+  .nav {
+    gap: 2px;
+  }
+
+  .nav-link {
+    padding: 7px 2px;
+    font-size: 0.72rem;
+  }
+
+  .nav-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* 16px text in form controls stops iPhones from zooming in on tap */
+  .currency-select,
+  .input {
+    font-size: 16px;
+  }
+
+  .main {
+    padding: 18px 16px 100px;
+  }
+
+  .monthly-grid,
+  .yearly-grid,
+  .stat-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-header {
+    gap: 12px;
+  }
+
+  .title-pill.large {
+    font-size: 1.2rem;
+    padding: 8px 16px;
+  }
+
+  .page-illustration {
+    height: 54px;
+  }
+
+  .page-illustration.small {
+    height: 46px;
+  }
+
+  .title-pill {
+    font-size: 1rem;
+    padding: 7px 14px;
+  }
+
+  .section-header {
+    flex-wrap: wrap;
+  }
+
+  .net-worth {
+    font-size: 1.8rem;
+  }
+
+  .net-worth-avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .banner {
+    height: 130px;
+  }
+
+  .header-controls {
+    width: 100%;
+  }
+
+  .header-controls > * {
+    flex: 1 1 0;
+  }
+
+  /* The month/year picker needs a bit more room than the button */
+  .header-controls > .input {
+    flex-grow: 1.6;
+  }
+
+  /* Filters: search, category and Show/Hide Future get a full row each */
+  .filter-row > * {
+    flex: 1 1 130px;
+  }
+
+  .filter-search,
+  .filter-category,
+  .filter-future,
+  .filter-row .btn {
+    flex-basis: 100%;
+  }
+
+  .breakdown-row {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) 38px;
+    gap: 6px;
+    padding: 6px 0;
+    font-size: 0.76rem;
+  }
+
+  .breakdown-percent {
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .row-icon {
+    font-size: 1rem;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .inner-card {
+    padding: 12px;
+  }
+
+  .io-track {
+    height: 120px;
+  }
+
+  .wants-needs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* On phones the tooltip appears as a bar near the bottom of the screen */
+  .info::after {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 84px;
+    width: auto;
+    max-width: none;
+  }
+
+  .theme-switcher {
+    right: 14px;
+    bottom: 26px;
+  }
+
+  .theme-fab {
+    width: 50px;
+    height: 50px;
+  }
+}

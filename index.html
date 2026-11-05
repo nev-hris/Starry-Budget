@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Starry Budget</title>
+
+    <!-- Nunito from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- =====================================================
+       IMAGE FILES USED ON THIS PAGE (all inside the "assets" folder)
+
+       Frames:        dashboardimage.gif, yearlyincomeimage.gif
+       Nav icons:     icon-1home.png, icon-2alltransactions.png,
+                      icon-3montlyoverview.png, icon-4yearlyoverview.png,
+                      icon-5incomehistory.png
+       User icon:     icon-login.png
+       Net worth:     icon-networth.png
+       Theme button:  icon-lightmode.png, icon-darkmode.png
+       Page art:      illustration-1home.png, illustration-2alltransactions.png,
+                      illustration-3monthlyoverview.png, illustration-4yearlyoverview.png,
+                      illustration-5incomehistory.png
+                      (desktop extras: add "on-left" to put one on the left side,
+                       "is-large" to make it bigger)
+       ===================================================== -->
+  </head>
+  <body>
+    <!-- Gradient + twinkly stars that sit behind everything -->
+    <div class="backdrop" aria-hidden="true"></div>
+
+    <!-- =====================================================
+       TOP NAVIGATION
+       Each link's href (#home, #transactions...) picks the page.
+       Words inside .hide-on-phone are hidden on small screens
+       so the whole nav bar always fits.
+       ===================================================== -->
+    <header class="topbar" id="topbar" hidden>
+      <nav class="nav" aria-label="Main">
+        <a class="nav-link" href="#home" data-page="home">
+          <img class="nav-icon" src="assets/icon-1home.png" alt="" />
+          <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-link" href="#transactions" data-page="transactions">
+          <img class="nav-icon" src="assets/icon-2alltransactions.png" alt="" />
+          <span class="nav-label"
+            ><span class="hide-on-phone">All </span>Transactions</span
+          >
+        </a>
+        <a class="nav-link" href="#monthly" data-page="monthly">
+          <img class="nav-icon" src="assets/icon-3montlyoverview.png" alt="" />
+          <span class="nav-label"
+            >Monthly<span class="hide-on-phone"> Overview</span></span
+          >
+        </a>
+        <a class="nav-link" href="#yearly" data-page="yearly">
+          <img class="nav-icon" src="assets/icon-4yearlyoverview.png" alt="" />
+          <span class="nav-label"
+            >Yearly<span class="hide-on-phone"> Overview</span></span
+          >
+        </a>
+        <a class="nav-link" href="#income" data-page="income">
+          <img class="nav-icon" src="assets/icon-5incomehistory.png" alt="" />
+          <span class="nav-label"
+            >Income<span class="hide-on-phone"> History</span></span
+          >
+        </a>
+      </nav>
+
+      <div class="topbar-right">
+        <!-- Only shown while looking at the example budget -->
+        <span class="mode-badge" id="modeBadge" hidden>Example</span>
+        <label class="visually-hidden" for="currencySelect">Currency</label>
+        <select id="currencySelect" class="currency-select">
+          <option value="RSD">RSD</option>
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
+        </select>
+        <button
+          type="button"
+          class="user-button"
+          id="userButton"
+          title="Your User"
+        >
+          <span>Hi <span id="userNameLabel">Nevena</span>!</span>
+          <img class="avatar" src="assets/icon-login.png" alt="" />
+        </button>
+      </div>
+    </header>
+
+    <!-- =====================================================
+       WELCOME PAGE
+       Shown when no budget is open. app.js swaps between this
+       and the app (top bar + pages).
+       ===================================================== -->
+    <section class="welcome" id="welcomeScreen" hidden>
+      <div class="welcome-card">
+        <img
+          class="welcome-illustration"
+          src="assets/illustration-1home.png"
+          alt=""
+        />
+        <p class="eyebrow">Your dreamy money tracker</p>
+        <h1 class="welcome-title">Welcome to Starry Budget</h1>
+        <p class="welcome-text">
+          Track your spending, plan your months and watch your savings grow.
+        </p>
+
+        <div class="welcome-options">
+          <!-- Main option: the example -->
+          <button
+            type="button"
+            class="welcome-option is-primary"
+            id="enterExampleButton"
+          >
+            <span class="welcome-badge">Recommended</span>
+            <span class="welcome-frame"
+              ><img src="assets/dashboardimage.gif" alt=""
+            /></span>
+            <span class="welcome-option-title">Explore the example</span>
+            <span class="welcome-option-text"
+              >See every page filled with three months of sample data. It starts
+              fresh each time you open it.</span
+            >
+            <span class="welcome-option-cta">Show me around →</span>
+          </button>
+
+          <!-- Second option: a real, empty budget (text changes once it has been used) -->
+          <button type="button" class="welcome-option" id="enterNewUserButton">
+            <span class="welcome-option-title" id="newUserTitle"
+              >Start as a new user</span
+            >
+            <span class="welcome-option-text" id="newUserText"
+              >A completely empty budget, ready for your own accounts and
+              transactions.</span
+            >
+            <span class="welcome-option-cta">Let's begin →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <main class="main" id="appMain" hidden>
+      <!-- =====================================================
+         PAGE: HOME  (Net Worth left, Recent Transactions right)
+         Every "Customize" button opens the same small pop-up
+         (show/hide the animated illustrations on all pages).
+         ===================================================== -->
+      <section class="page" id="page-home">
+        <div class="home-grid">
+          <!-- Left column -->
+          <div class="home-column">
+            <div class="section-header">
+              <h2 class="title-pill">Net Worth</h2>
+              <button type="button" class="btn" data-customize="home">
+                Customize
+              </button>
+            </div>
+
+            <div class="toggle-row">
+              <div
+                class="segmented"
+                role="group"
+                aria-label="Include assets in net worth"
+              >
+                <button
+                  type="button"
+                  class="segmented-option"
+                  data-assets="off"
+                >
+                  Assets Off
+                </button>
+                <button type="button" class="segmented-option" data-assets="on">
+                  Assets On
+                </button>
+              </div>
+              <span
+                class="info"
+                tabindex="0"
+                data-tip="Assets On adds things you own (car, home...) to your net worth."
+                >i</span
+              >
+            </div>
+
+            <p class="net-worth">
+              <img
+                class="net-worth-avatar"
+                src="assets/icon-networth.png"
+                alt=""
+              />
+              <span id="netWorthValue">0</span>
+            </p>
+            <!-- Filled in by app.js: says whether assets are included -->
+            <p class="net-worth-note" id="netWorthNote"></p>
+
+            <!-- Framed animated picture -->
+            <div class="banner">
+              <img src="assets/dashboardimage.gif" alt="" />
+            </div>
+
+            <div>
+              <div class="section-header">
+                <div class="section-header-left">
+                  <h3 class="title-pill small">Accounts</h3>
+                  <span
+                    class="info"
+                    tabindex="0"
+                    data-tip="Click an account to update its balance or delete it."
+                    >i</span
+                  >
+                </div>
+                <button type="button" class="btn" id="addAccountButton">
+                  Add +
+                </button>
+              </div>
+              <p class="list-label">Accounts</p>
+              <ul class="money-list" id="accountsList"></ul>
+            </div>
+
+            <div>
+              <div class="section-header">
+                <h3 class="title-pill small">Assets</h3>
+                <button type="button" class="btn" id="addAssetButton">
+                  Add +
+                </button>
+              </div>
+              <ul class="money-list" id="assetsList"></ul>
+            </div>
+          </div>
+
+          <!-- Right column -->
+          <div class="home-column">
+            <div class="section-header">
+              <div class="section-header-left">
+                <h2 class="title-pill">Recent Transactions</h2>
+                <img
+                  class="page-illustration small is-large"
+                  src="assets/illustration-1home.png"
+                  alt=""
+                />
+              </div>
+              <button type="button" class="btn" id="homeNewTransactionButton">
+                New +
+              </button>
+            </div>
+            <ul class="transaction-list" id="recentTransactionsList"></ul>
+            <p class="see-all">
+              <a href="#transactions" class="link-button"
+                >See all transactions →</a
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         PAGE: ALL TRANSACTIONS
+         ===================================================== -->
+      <section class="page" id="page-transactions" hidden>
+        <div class="page-header">
+          <div class="title-with-icon">
+            <h1 class="title-pill large">All Transactions</h1>
+            <img
+              class="page-illustration on-left"
+              src="assets/illustration-2alltransactions.png"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <div class="card filters-card">
+          <div class="filters-top">
+            <h2 class="card-title">Filters</h2>
+            <button
+              type="button"
+              class="text-button"
+              id="toggleFiltersButton"
+              aria-expanded="true"
+            >
+              HIDE ▴
+            </button>
+          </div>
+
+          <div class="filters-body" id="filtersBody">
+            <div class="filter-row">
+              <input
+                type="search"
+                id="filterSearch"
+                class="input filter-search"
+                placeholder="Search transactions..."
+                aria-label="Search transactions"
+              />
+              <select id="filterRange" class="input" aria-label="Date range">
+                <option value="this-month">This month</option>
+                <option value="last-month">Last month</option>
+                <option value="this-year">This year</option>
+                <option value="all">All time</option>
+              </select>
+              <div
+                class="segmented filter-future"
+                role="group"
+                aria-label="Future transactions"
+              >
+                <button
+                  type="button"
+                  class="segmented-option"
+                  data-future="show"
+                >
+                  Show Future
+                </button>
+                <button
+                  type="button"
+                  class="segmented-option"
+                  data-future="hide"
+                >
+                  Hide Future
+                </button>
+              </div>
+            </div>
+            <div class="filter-row">
+              <select id="filterFlow" class="input" aria-label="Amount type">
+                <option value="any">Any amount</option>
+                <option value="in">Money in</option>
+                <option value="out">Money out</option>
+              </select>
+              <select
+                id="filterCategory"
+                class="input filter-category"
+                aria-label="Category"
+              ></select>
+              <button
+                type="button"
+                class="text-button danger"
+                id="resetFiltersButton"
+              >
+                Reset
+              </button>
+              <select id="filterView" class="input" aria-label="View">
+                <option value="table">Table</option>
+                <option value="cards">Cards</option>
+              </select>
+              <button
+                type="button"
+                class="btn btn-white"
+                id="newTransactionButton"
+              >
+                New +
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-area">
+          <p class="results-summary" id="transactionsSummary"></p>
+          <div id="transactionsResults"></div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         PAGE: MONTHLY OVERVIEW
+         ===================================================== -->
+      <section class="page" id="page-monthly" hidden>
+        <div class="page-header">
+          <div class="title-with-icon">
+            <h1 class="title-pill large" id="monthlyTitle">Month</h1>
+            <img
+              class="page-illustration"
+              src="assets/illustration-3monthlyoverview.png"
+              alt=""
+            />
+          </div>
+          <div class="header-controls">
+            <input
+              type="month"
+              id="monthPicker"
+              class="input"
+              aria-label="Choose month"
+            />
+            <button type="button" class="btn" data-customize="monthly">
+              Customize
+            </button>
+          </div>
+        </div>
+
+        <div class="monthly-grid">
+          <!-- Column 1 -->
+          <div class="monthly-column">
+            <h2 class="column-title">Category Breakdown</h2>
+            <div class="card">
+              <p class="hint">
+                Click an expected amount to change that budget.
+              </p>
+              <div id="categoryBreakdown"></div>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="monthly-column">
+            <h2 class="column-title">Overview</h2>
+
+            <div class="card">
+              <h3 class="card-title caps">Money In / Money Out</h3>
+              <select
+                id="moneyModeSelect"
+                class="input full-width"
+                aria-label="Savings mode"
+              >
+                <option value="exclude">Excluding Savings</option>
+                <option value="include">Including Savings</option>
+              </select>
+              <p class="note">
+                Actual is month-to-date; expected is full month.
+              </p>
+              <div class="inner-card" id="moneyInOutChart"></div>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title caps">Weekly Spending</h3>
+              <p class="note">Savings excluded</p>
+              <div class="inner-card" id="weeklySpending"></div>
+              <p class="card-footer-text" id="weeklyFooter"></p>
+            </div>
+          </div>
+
+          <!-- Column 3 -->
+          <div class="monthly-column">
+            <h2 class="column-title">Monthly Insights</h2>
+
+            <div class="card">
+              <h3 class="card-title caps center">Top 8 Categories</h3>
+              <div id="topCategories"></div>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title caps">Category Groups</h3>
+              <p class="note">
+                Actual is month-to-date; expected is full month.
+              </p>
+              <div id="categoryGroups"></div>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title caps">Cumulative Spend vs Budget</h3>
+              <p class="note">Savings excluded</p>
+              <div class="line-legend">
+                <span><span class="legend-swatch actual"></span>Actual</span>
+                <span
+                  ><span class="legend-swatch budget"></span>Budget pace</span
+                >
+              </div>
+              <div class="inner-card" id="cumulativeChart"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         PAGE: YEARLY OVERVIEW
+         ===================================================== -->
+      <section class="page" id="page-yearly" hidden>
+        <div class="page-header">
+          <div class="title-with-icon">
+            <h1 class="title-pill large" id="yearlyTitle">Yearly Overview</h1>
+            <img
+              class="page-illustration"
+              src="assets/illustration-4yearlyoverview.png"
+              alt=""
+            />
+          </div>
+          <div class="header-controls">
+            <select
+              id="yearPicker"
+              class="input"
+              aria-label="Choose year"
+            ></select>
+            <button type="button" class="btn" data-customize="yearly">
+              Customize
+            </button>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="card stat-card">
+            <p class="stat-label">YTD Net</p>
+            <p class="stat-value" id="ytdNet">0</p>
+          </div>
+          <!-- Framed animated picture -->
+          <div class="banner stat-banner">
+            <img src="assets/yearlyincomeimage.gif" alt="" />
+          </div>
+          <div class="card stat-card">
+            <p class="stat-label">YTD Gross</p>
+            <p class="stat-value" id="ytdGross">0</p>
+          </div>
+          <div class="card stat-card">
+            <p class="stat-label">YTD Tax</p>
+            <p class="stat-value" id="ytdTax">0</p>
+          </div>
+        </div>
+
+        <div class="yearly-grid">
+          <div class="card">
+            <h3 class="card-title">YTD Spending by Budget Group</h3>
+            <div class="inner-card" id="ytdGroups"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Savings Mix (YTD)</h3>
+            <div class="inner-card" id="ytdSavings"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Top Budget Categories (YTD Spend)</h3>
+            <div class="inner-card" id="ytdTopCategories"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Monthly Budget Spend (YTD)</h3>
+            <div class="inner-card" id="ytdMonthlySpend"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Top Spending Months (YTD So Far)</h3>
+            <div class="inner-card" id="ytdTopMonths"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Average Monthly Spend (YTD So Far)</h3>
+            <div class="inner-card" id="ytdAverage"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Top Wants vs Needs Categories (YTD)</h3>
+            <div class="inner-card" id="ytdWantsNeeds"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         PAGE: INCOME HISTORY
+         ===================================================== -->
+      <section class="page" id="page-income" hidden>
+        <div class="page-header">
+          <div class="title-with-icon">
+            <h1 class="title-pill large">Income History</h1>
+            <img
+              class="page-illustration on-left is-large"
+              src="assets/illustration-5incomehistory.png"
+              alt=""
+            />
+          </div>
+          <button type="button" class="btn" id="addIncomeEntryButton">
+            Add Entry +
+          </button>
+        </div>
+
+        <div class="card income-overview">
+          <p class="eyebrow">How Income History Works</p>
+          <h2 class="card-title big">Income History Overview</h2>
+          <p>
+            Track your yearly income with one entry per year using hourly wage
+            or salary.
+            <span
+              class="info"
+              tabindex="0"
+              data-tip="Add one entry per year. Fill in an hourly wage, a yearly salary, or both. Click a row to edit it."
+              >i</span
+            >
+          </p>
+          <p class="note left">
+            To make edits to age, go to
+            <button type="button" class="link-button" id="openUserFromIncome">
+              Your User
+            </button>
+          </p>
+        </div>
+
+        <div class="income-charts">
+          <div class="card chart-card">
+            <h3 class="card-title">Salary by Year</h3>
+            <div class="chart-area" id="salaryChart"></div>
+          </div>
+          <div class="card chart-card">
+            <h3 class="card-title">Hourly Wage by Year</h3>
+            <div class="chart-area" id="hourlyChart"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Yearly Entries</h3>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Age</th>
+                  <th>Hourly Wage</th>
+                  <th>Salary</th>
+                </tr>
+              </thead>
+              <tbody id="incomeTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =====================================================
+       LIGHT / DARK MODE BUTTON (bottom right)
+       One click switches mode. Both icons sit inside the button;
+       CSS shows the one for the current mode and switches between them.
+       data-label (set by app.js) is the "Light Mode"/"Dark Mode" hover text.
+       ===================================================== -->
+    <div class="theme-switcher" id="themeSwitcher" data-label="Light Mode">
+      <button
+        type="button"
+        class="theme-fab"
+        id="themeToggle"
+        aria-label="Light Mode (click to switch)"
+      >
+        <img
+          class="theme-icon theme-icon-light"
+          src="assets/icon-lightmode.png"
+          alt=""
+        />
+        <img
+          class="theme-icon theme-icon-dark"
+          src="assets/icon-darkmode.png"
+          alt=""
+        />
+      </button>
+    </div>
+
+    <!-- =====================================================
+       ONE REUSABLE POP-UP FORM
+       app.js fills in the title and fields each time it opens.
+       ===================================================== -->
+    <dialog class="modal" id="formDialog">
+      <form id="dialogForm" class="modal-form" novalidate>
+        <div class="modal-header">
+          <h2 id="dialogTitle">Title</h2>
+          <button
+            type="button"
+            class="icon-button"
+            id="dialogCloseButton"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-fields" id="dialogFields"></div>
+        <p class="form-error" id="dialogError" role="alert"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-danger" id="dialogDeleteButton">
+            Delete
+          </button>
+          <button
+            type="button"
+            class="btn"
+            id="dialogExtraButton"
+            hidden
+          ></button>
+          <span class="spacer"></span>
+          <button type="button" class="btn" id="dialogCancelButton">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" id="dialogSubmitButton">
+            Save
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
