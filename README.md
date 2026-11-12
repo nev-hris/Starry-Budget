@@ -1,4 +1,4 @@
-# ✨ Starry Budget
+# Starry Budget
 
 A dreamy personal budgeting app for tracking spending, planning your months and watching your savings grow, in RSD, EUR or USD.
 
