@@ -1,0 +1,60 @@
+# Builds the app and publishes it to GitHub Pages
+# every time you push to the main branch.
+# (You can also start it by hand: GitHub → Actions → "Deploy to GitHub Pages" → Run workflow)
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Permissions GitHub needs to publish to Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  # 1. Build the site (the "dist" folder)
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v5
+
+      - name: Install Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 26
+          cache: npm
+
+      - name: Install packages
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload the dist folder
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./dist
+
+  # 2. Publish it
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

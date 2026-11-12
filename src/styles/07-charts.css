@@ -1,0 +1,337 @@
+/* ---------- 7. CHARTS ---------- */
+/* Horizontal progress bars */
+.bar-track {
+  height: 10px;
+  overflow: hidden;
+  background: var(--track);
+  border-radius: var(--radius-pill);
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-blue));
+  border-radius: var(--radius-pill);
+  transition: width 0.4s ease;
+}
+
+.bar-fill.is-over {
+  background: var(--negative);
+}
+
+.bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bar-list-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Weekly spending rows */
+.week-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.week-label {
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Money in / out vertical bars */
+.io-chart {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.io-group h4 {
+  margin: 0 0 8px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+}
+
+.io-bars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.io-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.io-value {
+  min-height: 2em;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.io-track {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 70px;
+  height: 150px;
+  overflow: hidden;
+  background: var(--track);
+  border-radius: 10px;
+}
+
+.io-fill {
+  width: 100%;
+  border-radius: 10px;
+  transition: height 0.4s ease;
+}
+
+.io-fill.in {
+  background: var(--accent-pink);
+}
+.io-fill.out {
+  background: var(--accent-blue);
+}
+
+.io-label {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.io-ratio {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* Donut chart (built with conic-gradient in app.js) */
+.donut {
+  display: grid;
+  place-items: center;
+  width: 190px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  margin: 8px auto 16px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+.donut-empty {
+  background: #f7e2d6;
+}
+
+.donut-hole {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 64%;
+  aspect-ratio: 1;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--nav-bg);
+  text-align: center;
+}
+
+.donut-tag {
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--pill-bg);
+  color: var(--pill-text);
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.donut-hole strong {
+  font-size: 0.95rem;
+}
+
+.donut-hole small {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.legend-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.legend-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legend-percent {
+  width: 38px;
+  text-align: right;
+  color: var(--text-muted);
+}
+
+/* Line charts (SVG) */
+.line-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 4px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.legend-swatch.actual {
+  background: var(--accent-blue);
+}
+.legend-swatch.budget {
+  background: var(--accent-pink);
+}
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.line-actual {
+  fill: none;
+  stroke: var(--accent-blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.line-budget {
+  fill: none;
+  stroke: var(--accent-pink);
+  stroke-width: 3;
+  stroke-dasharray: 6 5;
+}
+
+.chart-dot {
+  fill: var(--accent-blue);
+}
+
+.chart-grid {
+  stroke: var(--track);
+  stroke-width: 1;
+}
+
+.chart-text {
+  fill: var(--text-muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.chart-caption {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Vertical column chart */
+.column-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 190px;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  min-width: 0;
+}
+
+.column-value {
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.column-track {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 60px;
+  overflow: hidden;
+  background: var(--track);
+  border-radius: 8px;
+}
+
+.column-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--accent-pink), var(--accent-blue));
+  border-radius: 8px;
+  transition: height 0.4s ease;
+}
+
+.column-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+

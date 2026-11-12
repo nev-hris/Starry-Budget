@@ -1,0 +1,235 @@
+/* ---------- 9. RESPONSIVE ---------- */
+/* Small laptops / large tablets */
+@media (max-width: 1100px) {
+  .monthly-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Category breakdown takes the full first row */
+  .monthly-grid > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .yearly-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Smaller screens: the nav moves to its own row as 5 equal tiles
+   (icon on top, words underneath) so every link is always visible. */
+@media (max-width: 1180px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 16px;
+  }
+
+  .topbar-right {
+    order: 1;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav {
+    order: 2;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .nav-link {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 4px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.15;
+    font-size: 0.85rem;
+  }
+
+  .nav-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 860px) {
+  .home-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  /* Yearly: picture becomes a full-width row on top, stats in a row of 3 */
+  .stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .stat-banner {
+    order: -1;
+    grid-column: 1 / -1;
+    height: 150px;
+  }
+
+  .income-charts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phones */
+@media (max-width: 640px) {
+  /* Short nav labels: "All Transactions" → "Transactions" etc. */
+  .hide-on-phone {
+    display: none;
+  }
+
+  .nav {
+    gap: 2px;
+  }
+
+  .nav-link {
+    padding: 7px 2px;
+    font-size: 0.72rem;
+  }
+
+  .nav-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* 16px text in form controls stops iPhones from zooming in on tap */
+  .currency-select,
+  .input {
+    font-size: 16px;
+  }
+
+  .main {
+    padding: 18px 16px 100px;
+  }
+
+  .monthly-grid,
+  .yearly-grid,
+  .stat-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-header {
+    gap: 12px;
+  }
+
+  .title-pill.large {
+    font-size: 1.2rem;
+    padding: 8px 16px;
+  }
+
+  .page-illustration {
+    height: 54px;
+  }
+
+  .page-illustration.small {
+    height: 46px;
+  }
+
+  .title-pill {
+    font-size: 1rem;
+    padding: 7px 14px;
+  }
+
+  .section-header {
+    flex-wrap: wrap;
+  }
+
+  .net-worth {
+    font-size: 1.8rem;
+  }
+
+  .net-worth-avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .banner {
+    height: 130px;
+  }
+
+  .header-controls {
+    width: 100%;
+  }
+
+  .header-controls > * {
+    flex: 1 1 0;
+  }
+
+  /* The month/year picker needs a bit more room than the button */
+  .header-controls > .input {
+    flex-grow: 1.6;
+  }
+
+  /* Filters: search, category and Show/Hide Future get a full row each */
+  .filter-row > * {
+    flex: 1 1 130px;
+  }
+
+  .filter-search,
+  .filter-category,
+  .filter-future,
+  .filter-row .btn {
+    flex-basis: 100%;
+  }
+
+  .breakdown-row {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) 38px;
+    gap: 6px;
+    padding: 6px 0;
+    font-size: 0.76rem;
+  }
+
+  .breakdown-percent {
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .row-icon {
+    font-size: 1rem;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .inner-card {
+    padding: 12px;
+  }
+
+  .io-track {
+    height: 120px;
+  }
+
+  .wants-needs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* On phones the tooltip appears as a bar near the bottom of the screen */
+  .info::after {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 84px;
+    width: auto;
+    max-width: none;
+  }
+
+  .theme-switcher {
+    right: 14px;
+    bottom: 26px;
+  }
+
+  .theme-fab {
+    width: 50px;
+    height: 50px;
+  }
+}

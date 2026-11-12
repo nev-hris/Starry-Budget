@@ -1,0 +1,85 @@
+/* ---------- 6d. YEARLY OVERVIEW ---------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.stat-label {
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+/* The yearly frame stretches to the height of the stat cards beside it */
+.stat-banner {
+  height: auto;
+  min-height: 92px;
+  margin: 0;
+}
+
+.yearly-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.big-number {
+  margin: 2px 0 10px;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.kv-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--track);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.kv-row span {
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.ranked-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ranked-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 0;
+  border-top: 1px solid var(--track);
+  font-weight: 700;
+}
+
+.wants-needs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.wants-needs h4 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+

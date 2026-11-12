@@ -1,0 +1,334 @@
+/* ---------- 4. SHARED BUILDING BLOCKS ---------- */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px 110px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.title-with-icon,
+.section-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.header-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.title-pill {
+  display: inline-block;
+  margin: 0;
+  padding: 8px 20px;
+  background: var(--pill-bg);
+  color: var(--pill-text);
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.title-pill.large {
+  font-size: 1.45rem;
+  padding: 10px 22px;
+}
+
+.title-pill.small {
+  font-size: 1rem;
+  padding: 6px 18px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  backdrop-filter: blur(10px);
+}
+
+.card-title {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.card-title.big {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.95rem;
+}
+
+.center {
+  text-align: center;
+}
+
+.inner-card {
+  background: var(--inner-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+
+.note {
+  margin: 6px 0 12px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.note.left {
+  text-align: left;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.empty-note {
+  margin: 8px 0;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  padding: 7px 18px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(70, 60, 140, 0.12);
+  transition:
+    transform 0.15s,
+    background 0.15s;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+}
+
+[data-theme="dark"] .btn {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.btn-white {
+  background: #ffffff;
+}
+
+.btn-primary,
+[data-theme="dark"] .btn-primary {
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+}
+
+.btn-primary:hover,
+[data-theme="dark"] .btn-primary:hover {
+  background: var(--accent-dark);
+  opacity: 0.9;
+}
+
+.btn-danger,
+[data-theme="dark"] .btn-danger {
+  background: transparent;
+  color: var(--negative);
+  border-color: var(--negative);
+  box-shadow: none;
+}
+
+.text-button {
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.text-button.danger {
+  color: var(--negative);
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--accent-blue);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.input {
+  font: inherit;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 9px 14px;
+  min-height: 42px;
+  min-width: 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.input.full-width {
+  width: 100%;
+}
+
+/* Dropdowns: hide the browser's own arrow and use custom. */
+select.input,
+select.currency-select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: var(--select-arrow);
+  background-repeat: no-repeat;
+  background-size: 12px 8px;
+  background-position: right 16px center;
+  padding-right: 42px;
+}
+
+select.currency-select {
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+/* The open dropdown list: always dark text on a light background */
+select option,
+select optgroup {
+  background-color: #f4f2fc;
+  color: #2b2a4a;
+}
+
+.input:focus,
+.btn:focus-visible,
+.segmented-option:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Two-option pill switch (Assets On/Off, Show/Hide Future) */
+.segmented {
+  display: flex;
+  padding: 3px;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+}
+
+.segmented-option {
+  flex: 1;
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.segmented-option.active {
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+}
+
+/* Little "i" bubble – the tooltip text comes from its data-tip attribute.
+   The tooltip uses display:none until hover so it never makes the page wider. */
+.info {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: help;
+  vertical-align: middle;
+}
+
+.info::after {
+  content: attr(data-tip);
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: -10px;
+  width: max-content;
+  max-width: 240px;
+  padding: 8px 10px;
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.info:hover::after,
+.info:focus::after {
+  display: block;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--pill-bg);
+  color: var(--pill-text);
+  font-size: 0.68rem;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.amount {
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.is-positive {
+  color: var(--positive);
+}
+
+.is-negative {
+  color: var(--negative);
+}
+

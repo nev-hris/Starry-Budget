@@ -1,0 +1,60 @@
+/* =========================================================
+   Starry Budget — all styles start here
+   ---------------------------------------------------------
+   HOW THE STYLES ARE SET UP (Tailwind + your own CSS)
+
+   - Tailwind gives us utility classes (like "flex-1") that can be
+     used straight in the components.
+   - Tailwind's own "reset" (called Preflight) is NOT loaded, so the
+     app looks exactly like the original version.
+   - The original design lives in src/styles/, split into small files.
+     They are loaded in the SAME ORDER as the old styles.css, because
+     in CSS the order decides which rule wins.
+   - Everything sits in "layers": theme → base → components → utilities.
+     A Tailwind utility class always beats the design CSS.
+   ========================================================= */
+
+@layer theme, base, components, utilities;
+
+/* Tailwind (without Preflight) */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* The original Starry Budget design, in order */
+@import "./styles/01-theme-colours.css" layer(components);
+@import "./styles/02-base.css" layer(components);
+@import "./styles/03-top-navigation.css" layer(components);
+@import "./styles/04-building-blocks.css" layer(components);
+@import "./styles/05-images-and-animations.css" layer(components);
+@import "./styles/06a-page-home.css" layer(components);
+@import "./styles/06b-page-transactions.css" layer(components);
+@import "./styles/06c-page-monthly.css" layer(components);
+@import "./styles/06d-page-yearly.css" layer(components);
+@import "./styles/06e-page-income.css" layer(components);
+@import "./styles/07-charts.css" layer(components);
+@import "./styles/08-modal-and-theme-switcher.css" layer(components);
+@import "./styles/09-welcome.css" layer(components);
+@import "./styles/10-year-wheel.css" layer(components);
+@import "./styles/11-responsive.css" layer(components);
+
+/* ---------------------------------------------------------
+   Your colours and font as Tailwind names.
+   They point at the CSS variables in 01-theme-colours.css, so they
+   switch automatically in dark mode. Examples:
+     className="text-muted"   className="bg-accent-pink"
+     className="text-positive" className="font-sans"
+   --------------------------------------------------------- */
+@theme inline {
+  --font-sans: "Nunito", system-ui, sans-serif;
+
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-on-bg: var(--text-on-bg);
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-dark: var(--accent-dark);
+  --color-pill: var(--pill-bg);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-card: var(--card-bg);
+}

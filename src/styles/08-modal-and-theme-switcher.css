@@ -1,0 +1,201 @@
+/* ---------- 8. POP-UP FORM + THEME SWITCHER ---------- */
+.modal {
+  width: min(440px, calc(100vw - 32px));
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--nav-bg);
+  color: var(--text);
+  box-shadow: 0 20px 60px rgba(30, 20, 80, 0.4);
+}
+
+.modal::backdrop {
+  background: rgba(40, 30, 90, 0.45);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.modal-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.form-field small {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--accent-blue);
+}
+
+.form-error {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--negative);
+}
+
+.form-error:empty {
+  display: none;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* "Back to welcome page" gets its own full-width row under Cancel / Save */
+#dialogExtraButton {
+  order: 10;
+  flex-basis: 100%;
+}
+
+/* Small credit in the bottom-right corner, under the theme button */
+.site-credit {
+  position: fixed;
+  right: 16px;
+  bottom: 6px;
+  z-index: 30;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-on-bg);
+  text-shadow: 0 1px 6px rgba(60, 50, 130, 0.45);
+}
+
+.site-credit a {
+  color: inherit;
+}
+
+.theme-switcher {
+  position: fixed;
+  right: 20px;
+  bottom: 30px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.theme-fab {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--card-border);
+  border-radius: 50%;
+  background: var(--nav-bg);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.theme-fab:hover {
+  transform: scale(1.06);
+}
+
+/* Both icons are stacked on top of each other inside the button.
+   The hidden one is shrunk, spun and blurred; switching mode swaps
+   which one is hidden, so one smoothly switches into the other. */
+.theme-icon {
+  position: absolute;
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  object-fit: contain;
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease,
+    filter 0.6s ease;
+}
+
+.theme-icon-light,
+[data-theme="dark"] .theme-icon-dark {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  filter: blur(0);
+}
+
+.theme-icon-dark,
+[data-theme="dark"] .theme-icon-light {
+  opacity: 0;
+  transform: scale(0.3) rotate(-160deg);
+  filter: blur(4px);
+}
+
+/* "Light Mode" / "Dark Mode" label that appears to the left on hover.
+   The text comes from the data-label attribute that app.js sets. */
+.theme-switcher::before {
+  content: attr(data-label);
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  padding: 6px 12px;
+  background: var(--accent-dark);
+  color: var(--on-accent-dark);
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(6px, -50%);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  pointer-events: none;
+}
+
+.theme-switcher:hover::before {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+

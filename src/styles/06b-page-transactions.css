@@ -1,0 +1,120 @@
+/* ---------- 6b. ALL TRANSACTIONS ---------- */
+.filters-card {
+  margin-bottom: 20px;
+}
+
+.filters-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.filters-top .card-title {
+  margin: 0;
+}
+
+.filters-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-row > * {
+  flex: 1 1 160px;
+}
+
+.filter-search {
+  flex: 2 1 240px;
+  text-align: center;
+}
+
+.filter-category {
+  flex: 2 1 220px;
+}
+
+.filter-row .text-button {
+  flex: 0 0 auto;
+  padding: 0 8px;
+}
+
+.filter-row .btn {
+  flex: 0 1 120px;
+}
+
+.results-area {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.results-summary {
+  margin: 0 0 12px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-on-bg);
+  text-shadow: 0 1px 6px rgba(60, 50, 130, 0.35);
+}
+
+.empty-card {
+  padding: 28px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.data-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--track);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--track);
+}
+
+.align-right {
+  text-align: right !important;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover,
+.clickable-row:focus {
+  background: var(--hover-bg);
+  outline: none;
+}
+
+.category-chip {
+  padding: 3px 10px;
+  background: var(--inner-bg);
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+}
+

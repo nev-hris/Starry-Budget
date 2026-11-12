@@ -1,0 +1,147 @@
+/* ---------- 6c. MONTHLY OVERVIEW ---------- */
+.monthly-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.monthly-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.column-title {
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-on-bg);
+}
+
+.hint {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Name | Expected | Current | % */
+.breakdown-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) 44px;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--track);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.breakdown-head {
+  border-bottom: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.breakdown-row.is-total {
+  font-weight: 800;
+}
+
+.breakdown-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.row-icon {
+  font-size: 1.15rem;
+}
+
+.breakdown-percent {
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.breakdown-percent.is-over {
+  color: var(--negative);
+}
+
+.budget-button {
+  justify-self: start;
+  padding: 2px 4px;
+  background: none;
+  border: none;
+  border-bottom: 1px dashed var(--text-muted);
+  border-radius: 6px 6px 0 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.budget-button:hover {
+  background: rgba(248, 203, 224, 0.5);
+}
+
+.group-pill-row {
+  margin: 14px 0 6px;
+  text-align: center;
+}
+
+.group-pill {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #3a3356;
+  background: #cbbcf2;
+}
+
+.group-pill[data-group="Income"] {
+  background: #bfe6c9;
+}
+.group-pill[data-group="Housing"] {
+  background: #d3c3f3;
+}
+.group-pill[data-group="Necessities"] {
+  background: #b9c3f2;
+}
+.group-pill[data-group="Wants"] {
+  background: #f6c3da;
+}
+.group-pill[data-group="Savings"] {
+  background: #f6dfae;
+}
+
+.card-footer-text {
+  margin: 10px 0 0;
+  text-align: right;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.group-progress {
+  margin-bottom: 12px;
+}
+
+.group-progress-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+

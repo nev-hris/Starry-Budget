@@ -1,0 +1,128 @@
+/* ---------- BIRTH-YEAR WHEEL ----------
+   A 200px-tall window onto a list of 40px rows. The pink band marks the
+   middle row; the list snaps so a year always lands in it.
+   If you change 40px here, also change WHEEL_ITEM_HEIGHT in app.js. */
+.year-wheel {
+  position: relative;
+  margin-top: 6px;
+  height: 200px;
+  overflow: hidden;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+}
+
+.year-wheel:focus-within {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+.year-wheel::before {
+  content: "";
+  position: absolute;
+  top: 80px;
+  left: 8px;
+  right: 8px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--pill-bg);
+  pointer-events: none;
+}
+
+.wheel-list {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 80px 0; /* lets the first and last rows reach the middle band */
+  list-style: none;
+  /* Up and down only: no sideways sliding on phones */
+  overflow-x: hidden;
+  overflow-y: auto;
+  touch-action: pan-y;
+  overscroll-behavior: contain; /* scrolling the wheel doesn't scroll the pop-up */
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  outline: none;
+  /* Rows fade out towards the top and bottom edges */
+  -webkit-mask-image: linear-gradient(
+    transparent,
+    #000 30%,
+    #000 70%,
+    transparent
+  );
+  mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
+}
+
+.wheel-list::-webkit-scrollbar {
+  display: none;
+}
+
+.wheel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  scroll-snap-align: center;
+  color: var(--text-muted);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    font-size 0.15s,
+    color 0.15s;
+}
+
+.wheel-item small {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+/* The chosen year gets bigger text (not a "scale" effect, which would
+   make the row wider than the wheel and let it slide sideways) */
+.wheel-item.is-selected {
+  color: var(--pill-text);
+  font-size: 1.12rem;
+}
+
+/* Desktop: the page illustration leaves the title and becomes a big
+   picture fixed to the right edge of the screen, slightly cut off,
+   underneath the cards. Its size grows and shrinks with the window. */
+@media (min-width: 1101px) {
+  .page-illustration,
+  .page-illustration.small {
+    position: fixed;
+    right: clamp(-120px, -4vw, -30px);
+    bottom: 3vh;
+    height: min(clamp(260px, 32vw, 520px), 78vh);
+    z-index: -1;
+    pointer-events: none; /* clicks pass straight through to the cards */
+    animation: float-big 6s ease-in-out infinite;
+  }
+
+  /* Add class "on-left" in index.html to put a picture on the left side */
+  .page-illustration.on-left {
+    right: auto;
+    left: clamp(-120px, -4vw, -30px);
+  }
+
+  /* Add class "is-large" to make a picture bigger */
+  .page-illustration.is-large {
+    height: min(clamp(330px, 42vw, 680px), 88vh);
+  }
+}
+
+/* Respect people who turn off animations in their device settings */
+@media (prefers-reduced-motion: reduce) {
+  .page-illustration,
+  .page-illustration.small,
+  .welcome-illustration,
+  .backdrop::before,
+  .backdrop::after {
+    animation: none;
+  }
+
+  .theme-icon {
+    transition: none;
+  }
+}
+

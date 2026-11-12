@@ -1,0 +1,10 @@
+# Installed packages (recreated by `npm install`)
+node_modules
+
+# Build output (recreated by `npm run build`)
+dist
+
+# Editor / OS files
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,108 @@
+/* ---------- 1. THEME COLOURS ----------
+   Every colour lives here, so dark mode only has to swap these. */
+:root {
+  /* Background = two soft coloured glows on top of a bold diagonal gradient */
+  --bg-gradient:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(255, 186, 228, 0.55),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 88% 78%,
+      rgba(126, 196, 255, 0.4),
+      transparent 48%
+    ),
+    linear-gradient(
+      160deg,
+      #5c5fd6 0%,
+      #8571e6 28%,
+      #b77fe6 55%,
+      #ea95cf 80%,
+      #ffc2d6 100%
+    );
+  --nav-bg: rgba(238, 236, 250, 0.96);
+  --nav-border: #6b6a8a;
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-border: rgba(255, 255, 255, 0.75);
+  --inner-bg: rgba(255, 255, 255, 0.6);
+  --input-bg: rgba(255, 255, 255, 0.75);
+  --hover-bg: rgba(255, 255, 255, 0.4);
+  --text: #383758;
+  --text-muted: #6e6b8e;
+  --text-on-bg: #ffffff;
+  --pill-bg: #f8cbe0;
+  --pill-text: #3a3356;
+  --accent-pink: #f4a9c9;
+  --accent-blue: #7383d4;
+  --accent-dark: #3d3c66;
+  --on-accent-dark: #ffffff;
+  --positive: #2f8f63;
+  --negative: #c2456d;
+  --track: rgba(110, 107, 142, 0.18);
+  --shadow: 0 10px 30px rgba(70, 60, 140, 0.18);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-pill: 999px;
+  /* Little "v" arrow drawn as an SVG, used by every dropdown */
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%236e6b8e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  /* Glassy nav bar */
+  --nav-glass: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.62),
+    rgba(255, 255, 255, 0.3)
+  );
+  --nav-glass-edge: rgba(255, 255, 255, 0.75);
+  --nav-hover-bg: rgba(255, 255, 255, 0.7);
+  --nav-glow: rgba(150, 90, 220, 0.35);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark; /* makes date pickers & scrollbars dark too */
+  --bg-gradient:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(186, 90, 200, 0.35),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 88% 78%,
+      rgba(70, 110, 220, 0.3),
+      transparent 48%
+    ),
+    linear-gradient(
+      160deg,
+      #0b0a26 0%,
+      #1e1956 30%,
+      #3e2378 60%,
+      #6a2c74 85%,
+      #8a3a76 100%
+    );
+  --nav-bg: rgba(28, 26, 60, 0.96);
+  --nav-border: #4c4a7a;
+  --card-bg: rgba(44, 40, 86, 0.62);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --inner-bg: rgba(255, 255, 255, 0.06);
+  --input-bg: rgba(255, 255, 255, 0.08);
+  --hover-bg: rgba(255, 255, 255, 0.08);
+  --text: #eceafd;
+  --text-muted: #aaa6d4;
+  --pill-bg: #e79ac0;
+  --pill-text: #2b1f3d;
+  --accent-dark: #c9c4ff;
+  --on-accent-dark: #241f45;
+  --positive: #6fd3a4;
+  --negative: #ff8fb0;
+  --track: rgba(255, 255, 255, 0.12);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23aaa6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --nav-glass: linear-gradient(
+    180deg,
+    rgba(40, 34, 90, 0.7),
+    rgba(28, 24, 66, 0.4)
+  );
+  --nav-glass-edge: rgba(255, 255, 255, 0.16);
+  --nav-hover-bg: rgba(255, 255, 255, 0.14);
+  --nav-glow: rgba(200, 150, 255, 0.4);
+}
+

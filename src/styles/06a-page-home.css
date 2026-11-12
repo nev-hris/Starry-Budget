@@ -1,0 +1,154 @@
+/* ---------- 6a. HOME ---------- */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px;
+  align-items: start;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.toggle-row .segmented {
+  flex: 1;
+}
+
+.net-worth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 16px;
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.list-label {
+  margin: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.money-list {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+}
+
+.money-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 8px;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.money-item:hover {
+  background: var(--hover-bg);
+}
+
+.item-icon {
+  font-size: 1.6rem;
+}
+
+.item-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.empty-on-bg {
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-on-bg);
+  text-shadow: 0 1px 6px rgba(60, 50, 130, 0.35);
+}
+
+.see-all {
+  text-align: center;
+}
+
+/* Transaction rows used on Home and in "Cards" view */
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  font: inherit;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.transaction-item:hover {
+  transform: translateY(-1px);
+}
+
+.transaction-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background: var(--inner-bg);
+  border-radius: 12px;
+  font-size: 1.4rem;
+}
+
+.transaction-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction-title {
+  display: block;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.is-future {
+  opacity: 0.7;
+}
+

@@ -1,0 +1,33 @@
+/* ---------- 6e. INCOME HISTORY ---------- */
+.income-overview {
+  margin-bottom: 16px;
+}
+
+.income-overview p {
+  margin: 0 0 8px;
+}
+
+.income-charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
+.chart-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-area > * {
+  width: 100%;
+}
+
